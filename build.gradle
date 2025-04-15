@@ -1,0 +1,141 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.openapi.generator' version '7.12.0'
+    id "com.diffplug.spotless" version "7.0.3"
+}
+
+group 'com.aws.service'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    awsVersion = '2.31.22'
+    junitVersion = '5.11.0'
+    lombokVersion = '1.18.38'
+    jacksonVersion = '2.18.3'
+    jerseyVersion = '4.0.0-M2'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+
+    implementation("software.amazon.awssdk:ec2:${awsVersion}")
+    implementation("software.amazon.awssdk:elasticloadbalancingv2:${awsVersion}")
+
+    implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${jacksonVersion}")
+
+    implementation("org.glassfish.jersey.containers:jersey-container-servlet:${jerseyVersion}")
+    implementation("org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}")
+    implementation("org.glassfish.jersey.inject:jersey-cdi2-se:${jerseyVersion}")
+
+    implementation("org.hibernate.validator:hibernate-validator:8.0.2.Final")
+
+    implementation("jakarta.validation:jakarta.validation-api:3.1.1")
+    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api:4.1.0')
+    compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
+    compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
+
+    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+}
+
+String defaultPackage = "com.aws.service"
+tasks.register('openApiGenerateClasses', GenerateTask) {
+    String outputDirectory = "${layout.buildDirectory.get()}/generated/JaxRS";
+
+    generatorName.set("jaxrs-spec")
+    cleanupOutput.set(true)
+    inputSpec.set("$rootDir/swagger/aws-service-hub.yaml")
+    templateDir.set("$rootDir/swagger/")
+    outputDir.set(outputDirectory)
+    invokerPackage.set("${defaultPackage}")
+    apiPackage.set("${defaultPackage}.api")
+    apiNameSuffix.set("Interface")
+    modelPackage.set("${defaultPackage}.model")
+    configOptions.set([
+
+            additionalModelTypeAnnotations: ";@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY)" +
+                    ";@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)",
+
+            useTags                       : "true",
+            dateLibrary                   : "java8",
+
+            openApiSpecFileLocation       : "openapi.yaml",
+            sourceFolder                  : "src/main/java",
+
+            useJakartaEe                  : "true",
+            useBeanValidation             : "true",
+            hideGenerationTimestamp       : "true",
+            interfaceOnly                 : "true",
+
+            useSwaggerAnnotations         : "false",
+
+            containerDefaultToNull        : "true",
+            openApiNullable               : "false",
+
+            generatePom                   : "false",
+
+            generateConstructorWithAllArgs: "true"
+    ])
+}
+
+war {
+    doFirst {
+        def propertyFile = file('build.properties')
+        def props = new Properties()
+        if (propertyFile.exists()) {
+            propertyFile.withReader { props.load(it) }
+        }
+        props.setProperty('projectName', project.name.toString())
+        props.setProperty('releaseDate', new Date().format('yyyy-MM-dd-HH:mm:ss'))
+        props.setProperty('projectVersion', version.toString())
+        propertyFile.withWriter { props.store(it, null) }
+    }
+    webInf {
+        from('\\') {
+            include 'CHANGELOG.md'
+            include 'LICENSE.md'
+            include 'README.md'
+            include 'build.properties'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+spotless {
+    java {
+        target("**/*.java")
+        toggleOffOn()
+        palantirJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+afterEvaluate {
+    tasks.named("war") {
+        dependsOn("spotlessApply")
+    }
+}

@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: vat-validation
+  version: '1.0.0'
+paths:
+  "/aws/load-balancer/service/status/":
+    post:
+      operationId: loadBalancerStatus
+      tags:
+        - loadBalancerStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loadBalancerStatusRequest"
+      responses:
+        '200':
+          description: "Service successfully connected to the load balancer"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loadBalancerStatusResponse"
+        '503':
+          description: "Service not connected to the load balancer"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loadBalancerStatusResponse"
+components:
+  schemas:
+    loadBalancerStatusRequest:
+      type: object
+      required:
+        - loadBalancerName
+        - instanceId
+        - region
+        - port
+      properties:
+        loadBalancerName:
+          type: string
+          description: "Load Balancer name"
+        instanceId:
+          type: string
+          description: "Instance ID"
+        region:
+          type: string
+          description: "Aws region"
+        port:
+          type: integer
+          description: "Service port"
+    loadBalancerStatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ attached, detached, error ]
+          description: "Instance status"
+        alarms:
+          $ref: "#/components/schemas/alarm"
+    alarm:
+      type: object
+      properties:
+        code:
+          type: string
+          enum: [ REQUEST_ERROR, AWS_CONNECTION_ERROR ]
+          description: "Alarm code"
+        message:
+          type: string
+          description: "Alarm description"
