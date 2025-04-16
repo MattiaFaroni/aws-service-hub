@@ -7,3 +7,5 @@
 - Jackson 2.18.3
 - Jersey 4.0.0-M2
 - JUnit 5.11.0
+- Sentry 5.3.0
+- Log4j 2.24.3

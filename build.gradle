@@ -5,6 +5,7 @@ plugins {
     id 'war'
     id 'org.openapi.generator' version '7.12.0'
     id "com.diffplug.spotless" version "7.0.3"
+    id "io.sentry.jvm.gradle" version "5.3.0"
 }
 
 group 'com.aws.service'
@@ -20,6 +21,7 @@ ext {
     lombokVersion = '1.18.38'
     jacksonVersion = '2.18.3'
     jerseyVersion = '4.0.0-M2'
+    log4jVersion = '2.24.3'
 }
 
 java {
@@ -39,6 +41,11 @@ dependencies {
     implementation("software.amazon.awssdk:elasticloadbalancingv2:${awsVersion}")
 
     implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${jacksonVersion}")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
+
+    implementation("org.apache.logging.log4j:log4j-core:${log4jVersion}")
+    implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}")
 
     implementation("org.glassfish.jersey.containers:jersey-container-servlet:${jerseyVersion}")
     implementation("org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}")
@@ -51,6 +58,7 @@ dependencies {
     compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
 
+    implementation("io.smallrye:jandex:3.2.7")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")

@@ -4,6 +4,7 @@ import com.aws.service.model.Alarm;
 import com.aws.service.model.LoadBalancerStatusRequest;
 import com.aws.service.model.LoadBalancerStatusResponse;
 import com.aws.service.tools.Timestamp;
+import io.sentry.Sentry;
 import jakarta.ws.rs.InternalServerErrorException;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class LoadBalancerStatusService {
             return ElasticLoadBalancingV2Client.builder().region(Region.of(region)).build();
 
         } catch (Exception e) {
+            Sentry.captureException(e);
             generateAlarm(e.getMessage());
             return null;
         }
@@ -77,6 +79,7 @@ public class LoadBalancerStatusService {
             }
 
         } catch (Exception e) {
+            Sentry.captureException(e);
             generateAlarm(e.getMessage());
             return null;
         }
@@ -105,6 +108,7 @@ public class LoadBalancerStatusService {
             }
 
         } catch (Exception e) {
+            Sentry.captureException(e);
             generateAlarm(e.getMessage());
             return null;
         }
@@ -136,6 +140,7 @@ public class LoadBalancerStatusService {
             return false;
 
         } catch (Exception e) {
+            Sentry.captureException(e);
             generateAlarm(e.getMessage());
             return false;
         }
