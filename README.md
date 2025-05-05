@@ -7,21 +7,23 @@
 <p align="center">
 <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=openjdk&logoColor=white" alt="">
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white" alt="">
+<img src="https://img.shields.io/badge/Sentry-black?style=for-the-badge&logo=Sentry&logoColor=#362D59" alt="">
 <img src="https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazonwebservices&logoColor=white" alt="">
 </p>
 
 --------
 
-AWS-Service-Hub is a Java application that exposes a set of REST APIs to simplify interaction with AWS services.
-The project is developed using Java 21 with Gradle and Tomcat 10.  
-**Note: An AWS account is required to use this project.**
+AWS-Service-Hub is a Java application designed to abstract and simplify access to AWS services through a standardized set of REST APIs.
+The project is developed using Java 21, built with Gradle, and deployed on Apache Tomcat 10 as the servlet container.  
+**Note: A valid AWS account is required to authenticate and access AWS services through this application.** 
+
 
 ## Features
-* Check whether a specific service is connected to the AWS load balancer
+* Verify the connectivity status of a specific service with the configured AWS Load Balancer.
 
 ## Load Balancer Service
-This service enables you to verify if a service is properly connected to the AWS load balancer.  
-Below is an example of a request:
+This service allows you to validate whether a given application or service is correctly registered and connected to the target AWS Load Balancer.
+An example request is shown below:
 
 ```http request
 POST /aws/load-balancer/service/status
@@ -43,4 +45,4 @@ If the service is correctly connected to the load balancer, the result will rese
     "timestamp": "2025-04-15T10:25:20.823045692Z"
 }
 ```
-If any input information is incorrect, the response will return a 500 status code along with an 'alarms' section detailing the errors found.
+If any input parameters are invalid or misconfigured, the service responds with an HTTP 500 status code, including an alarms section in the response body that outlines the detected issues.
