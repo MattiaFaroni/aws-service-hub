@@ -15,7 +15,7 @@
 
 AWS-Service-Hub is a Java application designed to abstract and simplify access to AWS services through a standardized set of REST APIs.
 The project is developed using Java 21, built with Gradle, and deployed on Apache Tomcat 10 as the servlet container.  
-**Note: A valid AWS account is required to authenticate and access AWS services through this application.** 
+**Note: To use the API, you must have a valid AWS (Amazon Web Services) account. Additionally, AWS credentials must be properly configured on your local machine via the standard AWS configuration directory (.aws).** 
 
 
 ## Features
