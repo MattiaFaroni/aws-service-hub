@@ -1,64 +1,56 @@
 package com.aws.service.listener;
 
-import com.aws.service.logging.Logger;
 import io.sentry.Sentry;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebListener
-public class ApplicationListener extends Logger implements ServletContextListener {
+public class ApplicationListener implements ServletContextListener {
 
-    private static String version;
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationListener.class);
+    private String version = "unknown";
 
-    public ApplicationListener() throws IOException {
-        InputStream in = getClass().getClassLoader().getResourceAsStream("../build.properties");
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        logger.info("----------------------------------------------");
+        initializeApplication();
+        logger.info("-- Start aws-service-hub API version {} ---", version);
+        logger.info("----------------------------------------------");
+    }
+
+    /**
+     * Initializes the application by loading configuration files.
+     */
+    private void initializeApplication() {
         Properties properties = new Properties();
-        properties.load(in);
-        version = properties.get("projectVersion").toString();
 
-        FileInputStream fileProperties = readFileProperties("sentry.properties");
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("../build.properties")) {
+            properties.load(in);
+            version = properties.getProperty("projectVersion", "unknown");
+        } catch (Exception e) {
+            logger.error("Error reading file build.properties", e);
+        }
 
-        if (fileProperties != null) {
-            properties.load(fileProperties);
-
+        File sentryFile = new File(System.getProperty("catalina.home"), "config/sentry.properties");
+        try (FileInputStream fis = new FileInputStream(sentryFile)) {
+            properties.load(fis);
             Sentry.init(options -> {
                 options.setDsn(properties.getProperty("dsn"));
                 options.setEnvironment(properties.getProperty("environment"));
                 options.setRelease(properties.getProperty("release"));
-                options.setTracesSampleRate(Double.parseDouble(properties.getProperty("traces-sample-rate")));
-                options.setDebug(Boolean.parseBoolean(properties.getProperty("debug")));
+                options.setTracesSampleRate(Double.parseDouble(properties.getProperty("traces-sample-rate", "1.0")));
+                options.setDebug(Boolean.parseBoolean(properties.getProperty("debug", "false")));
             });
-        } else {
+        } catch (Exception e) {
+            logger.error("Failed to initialize Sentry from sentry.properties. Using default Sentry config.", e);
             Sentry.init();
         }
-    }
-
-    /**
-     * Method used to read the properties file
-     * @param fileName file name
-     * @return properties file
-     */
-    public static FileInputStream readFileProperties(String fileName) {
-        try {
-            File configDir = new File(System.getProperty("catalina.home"), "config");
-            File configFile = new File(configDir, fileName);
-            return new FileInputStream(configFile);
-        } catch (Exception e) {
-            printInfo("Config file not found in tomcat", e.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) {
-        printInfo("----------------------------------------------");
-        printInfo("-- Start aws-service-hub API version " + version + " ---");
-        printInfo("----------------------------------------------");
     }
 }
