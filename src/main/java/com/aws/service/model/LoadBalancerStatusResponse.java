@@ -1,8 +1,6 @@
 package com.aws.service.model;
 
 import com.fasterxml.jackson.annotation.*;
-import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +17,7 @@ public class LoadBalancerStatusResponse {
 
     private StatusEnum status;
     private String timestamp;
-    private @Valid List<@Valid Alarm> alarms;
+    private Alarm alarm;
 
     @Getter
     @NoArgsConstructor

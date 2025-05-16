@@ -55,11 +55,8 @@ components:
           type: string
           enum: [ attached, detached, error ]
           description: "Instance status"
-        alarms:
-          type: array
-          items:
-            $ref: "#/components/schemas/alarm"
-          description: "List of alarms"
+        alarm:
+          $ref: "#/components/schemas/alarm"
     alarm:
       type: object
       properties:
