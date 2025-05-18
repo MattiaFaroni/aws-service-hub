@@ -63,11 +63,13 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    testImplementation("org.wiremock:wiremock:3.13.0")
 }
 
 String defaultPackage = "com.aws.service"
 tasks.register('openApiGenerateClasses', GenerateTask) {
-    String outputDirectory = "${layout.buildDirectory.get()}/generated/JaxRS";
+    String outputDirectory = "${layout.buildDirectory.get()}/generated/JaxRS"
 
     generatorName.set("jaxrs-spec")
     cleanupOutput.set(true)
