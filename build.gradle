@@ -3,9 +3,9 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id 'java'
     id 'war'
-    id 'org.openapi.generator' version '7.12.0'
+    id 'org.openapi.generator' version '7.13.0'
     id "com.diffplug.spotless" version "7.0.3"
-    id "io.sentry.jvm.gradle" version "5.3.0"
+    id "io.sentry.jvm.gradle" version "5.6.0"
 }
 
 group 'com.aws.service'
@@ -16,10 +16,11 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.31.22'
-    junitVersion = '5.11.0'
+    awsVersion = '2.31.45'
+    jUnitJupiterVersion = '5.12.2'
+    jUnitPlatformVersion = '1.12.2'
     lombokVersion = '1.18.38'
-    jacksonVersion = '2.18.3'
+    jacksonVersion = '2.19.0'
     jerseyVersion = '4.0.0-M2'
     log4jVersion = '2.24.3'
 }
@@ -61,8 +62,10 @@ dependencies {
     implementation("io.smallrye:jandex:3.2.7")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${jUnitJupiterVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${jUnitJupiterVersion}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:${jUnitPlatformVersion}")
+    testRuntimeOnly("org.junit.platform:junit-platform-engine:${jUnitPlatformVersion}")
 
     testImplementation("org.wiremock:wiremock:3.13.0")
 }
