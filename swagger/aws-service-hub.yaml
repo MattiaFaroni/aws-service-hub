@@ -53,8 +53,11 @@ components:
       properties:
         status:
           type: string
-          enum: [ attached, detached, error ]
+          enum: [ ATTACHED, DETACHED, ERROR ]
           description: "Instance status"
+        timestamp:
+          type: string
+          description: "Timestamp"
         alarm:
           $ref: "#/components/schemas/alarm"
     alarm:
