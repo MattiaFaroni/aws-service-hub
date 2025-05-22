@@ -10,47 +10,64 @@ import jakarta.ws.rs.core.Response;
 public class ErrorResponseBuilder {
 
     /**
-     * Builds and returns a BadRequestException with a specified error message and error code.
-     * @param message the error message to include in the response
-     * @param code the specific error code to include in the response
-     * @return a BadRequestException containing the error response with the specified message and code
+     * Constructs a BadRequestException containing an error response.
+     * @param <T> the type of the error response entity
+     * @param message the error message to be included in the error response
+     * @param code the specific error code of type Alarm.CodeEnum indicating the nature of the error
+     * @param responseType the class type of the error response entity to be constructed
+     * @return a BadRequestException containing the error response
      */
-    public static BadRequestException buildBadRequest(String message, Alarm.CodeEnum code) {
-        LoadBalancerStatusResponse errorResponse = buildErrorResponse(message, code);
+    // spotless:off
+    public static <T> BadRequestException buildBadRequest(String message, Alarm.CodeEnum code, Class<T> responseType) {
+        T errorResponse = buildErrorResponse(message, code, responseType);
         return new BadRequestException(Response.status(Response.Status.BAD_REQUEST)
                 .entity(errorResponse)
                 .build());
     }
 
     /**
-     * Builds and returns an InternalServerErrorException with a specified error message and error code.
-     * @param message the error message to include in the response
-     * @param code the specific error code to include in the alarm of the response
-     * @return an InternalServerErrorException instance containing the error response with the specified message and code
+     * Builds an InternalServerErrorException containing an error response.
+     * @param <T> the type of the error response entity
+     * @param message the error message to be included in the error response
+     * @param code the specific error code of type Alarm.CodeEnum indicating the nature of the error
+     * @param responseType the class type of the error response entity to be constructed
+     * @return an InternalServerErrorException containing the error response
      */
-    public static InternalServerErrorException buildInternalServerErrorException(String message, Alarm.CodeEnum code) {
-        LoadBalancerStatusResponse errorResponse = buildErrorResponse(message, code);
+    public static <T> InternalServerErrorException buildInternalServerErrorException(String message, Alarm.CodeEnum code, Class<T> responseType) {
+        T errorResponse = buildErrorResponse(message, code, responseType);
         return new InternalServerErrorException(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(errorResponse)
                 .build());
     }
 
     /**
-     * Builds an error response for a load balancer operation.
-     * @param message the error message to include in the response
-     * @param code the specific error code to include in the alarm of the response
-     * @return a LoadBalancerStatusResponse object containing the error status, timestamp, and alarm details
+     * Builds an error response object of the specified type.
+     * @param <T> the type of the error response to be constructed
+     * @param message the error message to be included in the response
+     * @param code the specific error code of type {@link Alarm.CodeEnum} indicating the nature of the error
+     * @param responseType the class type of the response object to be created
+     * @return an instance of the specified response type containing the error details
+     * @throws RuntimeException if an instance of the specified response type cannot be created
      */
-    private static LoadBalancerStatusResponse buildErrorResponse(String message, Alarm.CodeEnum code) {
-        LoadBalancerStatusResponse response = new LoadBalancerStatusResponse();
-        response.setStatus(LoadBalancerStatusResponse.StatusEnum.ERROR);
-        response.setTimestamp(new Timestamp().toString());
+    public static <T> T buildErrorResponse(String message, Alarm.CodeEnum code, Class<T> responseType) {
+        try {
+            T response = responseType.getConstructor().newInstance();
 
-        Alarm alarm = new Alarm();
-        alarm.setCode(code);
-        alarm.setMessage(message);
+            Alarm alarm = new Alarm();
+            alarm.setCode(code);
+            alarm.setMessage(message);
 
-        response.setAlarm(alarm);
-        return response;
+            if (response instanceof LoadBalancerStatusResponse lbResponse) {
+                lbResponse.setStatus(LoadBalancerStatusResponse.StatusEnum.ERROR);
+                lbResponse.setTimestamp(new Timestamp().toString());
+                lbResponse.setAlarm(alarm);
+            }
+
+            return response;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating response. ", e);
+        }
     }
+    // spotless:on
 }

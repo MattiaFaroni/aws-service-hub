@@ -27,7 +27,7 @@ public class LoadBalancerStatusController implements LoadBalancerStatusInterface
     public LoadBalancerStatusResponse loadBalancerInstance(LoadBalancerStatusRequest request) {
 
         if (request == null) {
-            throw buildBadRequest("Request body not valid", Alarm.CodeEnum.REQUEST_ERROR);
+            throw buildBadRequest("Request body not valid", Alarm.CodeEnum.REQUEST_ERROR, LoadBalancerStatusResponse.class);
         }
 
         Set<ConstraintViolation<LoadBalancerStatusRequest>> constraintViolations = validator.validate(request);
@@ -48,7 +48,7 @@ public class LoadBalancerStatusController implements LoadBalancerStatusInterface
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .findFirst()
                 .orElse("Invalid request");
-        return buildBadRequest(error, Alarm.CodeEnum.REQUEST_ERROR);
+        return buildBadRequest(error, Alarm.CodeEnum.REQUEST_ERROR, LoadBalancerStatusResponse.class);
     }
     // spotless:on
 }
