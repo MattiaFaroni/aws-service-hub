@@ -1,88 +1,54 @@
 package com.aws.service.controller;
 
+import static com.aws.service.error.ErrorResponseBuilder.buildBadRequest;
+
 import com.aws.service.api.LoadBalancerStatusInterface;
 import com.aws.service.model.Alarm;
 import com.aws.service.model.LoadBalancerStatusRequest;
 import com.aws.service.model.LoadBalancerStatusResponse;
 import com.aws.service.service.LoadBalancerStatusService;
-import com.aws.service.tools.Timestamp;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Set;
 
 @Path("/load-balancer/service/status")
 public class LoadBalancerStatusController implements LoadBalancerStatusInterface {
 
     // spotless:off
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    Validator validator = factory.getValidator();
+    private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    private static final Validator validator = factory.getValidator();
+    private final LoadBalancerStatusService loadBalancerStatusService = new LoadBalancerStatusService();
 
     @Override
-    public LoadBalancerStatusResponse loadBalancerInstance(LoadBalancerStatusRequest loadBalancerStatusRequest) {
+    public LoadBalancerStatusResponse loadBalancerInstance(LoadBalancerStatusRequest request) {
 
-        if (loadBalancerStatusRequest == null) {
-            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(generateErrorResponse("request body not valid"))
-                    .build());
+        if (request == null) {
+            throw buildBadRequest("Request body not valid", Alarm.CodeEnum.REQUEST_ERROR, LoadBalancerStatusResponse.class);
         }
 
-        Set<ConstraintViolation<LoadBalancerStatusRequest>> constraintViolations = validator.validate(loadBalancerStatusRequest);
-
-        if (constraintViolations.isEmpty()) {
-            LoadBalancerStatusService loadBalancerStatusService = new LoadBalancerStatusService();
-            return loadBalancerStatusService.checkInstanceStatus(loadBalancerStatusRequest);
-
-        } else {
-            throw new BadRequestException(Response.status(Response.Status.BAD_REQUEST)
-                    .entity(generateParametersException(constraintViolations.stream().findFirst().get().getPropertyPath()))
-                    .build());
+        Set<ConstraintViolation<LoadBalancerStatusRequest>> constraintViolations = validator.validate(request);
+        if (!constraintViolations.isEmpty()) {
+            throw buildValidationError(constraintViolations);
         }
+
+        return loadBalancerStatusService.checkInstanceStatus(request);
     }
 
     /**
-     * Method used to return an error in case of invalid parameters
-     * @param propertyPath variables in error
-     * @return service response
+     * Constructs a BadRequestException using the validation errors provided in the set of constraint violations.
+     * @param violations a set of constraint violations that occurred during validation of the request
+     * @return a BadRequestException containing an error message representing the validation issue
      */
-    private LoadBalancerStatusResponse generateParametersException(jakarta.validation.Path propertyPath) {
-        Iterator<jakarta.validation.Path.Node> iterator = propertyPath.iterator();
-        String errorDescription = "";
-
-        while (iterator.hasNext()) {
-            String name = String.valueOf(iterator.next());
-            if (!iterator.hasNext()) {
-                errorDescription = name + " parameter not found";
-            }
-        }
-
-        return generateErrorResponse(errorDescription);
-    }
-
-    /**
-     * Method used to generate the service response in case of error
-     * @param errorMessage error message
-     * @return service response
-     */
-    private LoadBalancerStatusResponse generateErrorResponse(String errorMessage) {
-        LoadBalancerStatusResponse loadBalancerStatusResponse = new LoadBalancerStatusResponse();
-        loadBalancerStatusResponse.setStatus(LoadBalancerStatusResponse.StatusEnum.ERROR);
-        loadBalancerStatusResponse.setTimestamp(new Timestamp().toString());
-
-        ArrayList<Alarm> alarmList = new ArrayList<>();
-        Alarm alarm = new Alarm();
-        alarm.setCode(Alarm.CodeEnum.REQUEST_ERROR);
-        alarm.setMessage(errorMessage);
-        alarmList.add(alarm);
-
-        loadBalancerStatusResponse.setAlarms(alarmList);
-        return loadBalancerStatusResponse;
+    private BadRequestException buildValidationError(Set<ConstraintViolation<LoadBalancerStatusRequest>> violations) {
+        String error = violations.stream()
+                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                .findFirst()
+                .orElse("Invalid request");
+        return buildBadRequest(error, Alarm.CodeEnum.REQUEST_ERROR, LoadBalancerStatusResponse.class);
     }
     // spotless:on
 }

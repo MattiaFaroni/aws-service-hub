@@ -53,13 +53,13 @@ components:
       properties:
         status:
           type: string
-          enum: [ attached, detached, error ]
+          enum: [ ATTACHED, DETACHED, ERROR ]
           description: "Instance status"
-        alarms:
-          type: array
-          items:
-            $ref: "#/components/schemas/alarm"
-          description: "List of alarms"
+        timestamp:
+          type: string
+          description: "Timestamp"
+        alarm:
+          $ref: "#/components/schemas/alarm"
     alarm:
       type: object
       properties:
