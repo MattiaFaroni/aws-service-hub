@@ -57,7 +57,7 @@ paths:
 
 components:
   schemas:
-    BaseResponse:
+    BaseAlarmResponse:
       type: object
       properties:
         timestamp:
@@ -134,7 +134,7 @@ components:
 
     LoadBalancerStatusResponse:
       allOf:
-        - $ref: "#/components/schemas/BaseResponse"
+        - $ref: "#/components/schemas/BaseAlarmResponse"
         - type: object
           properties:
             status:
@@ -144,7 +144,7 @@ components:
 
     Ec2InstancesResponse:
       allOf:
-        - $ref: "#/components/schemas/BaseResponse"
+        - $ref: "#/components/schemas/BaseAlarmResponse"
         - type: object
           properties:
             instances:
