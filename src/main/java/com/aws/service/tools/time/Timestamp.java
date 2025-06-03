@@ -1,4 +1,4 @@
-package com.aws.service.tools;
+package com.aws.service.tools.time;
 
 import java.time.Instant;
 import java.time.ZoneOffset;

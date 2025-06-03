@@ -2,7 +2,7 @@ package com.aws.service.error;
 
 import com.aws.service.model.Alarm;
 import com.aws.service.model.BaseAlarmResponse;
-import com.aws.service.tools.Timestamp;
+import com.aws.service.tools.time.Timestamp;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.InternalServerErrorException;
 import jakarta.ws.rs.core.Response;

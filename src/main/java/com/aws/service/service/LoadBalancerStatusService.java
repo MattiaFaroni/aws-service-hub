@@ -5,7 +5,7 @@ import static com.aws.service.error.ErrorResponseBuilder.buildInternalServerErro
 import com.aws.service.model.Alarm;
 import com.aws.service.model.LoadBalancerStatusRequest;
 import com.aws.service.model.LoadBalancerStatusResponse;
-import com.aws.service.tools.Timestamp;
+import com.aws.service.tools.time.Timestamp;
 import io.sentry.Sentry;
 import jakarta.ws.rs.InternalServerErrorException;
 import java.util.List;
