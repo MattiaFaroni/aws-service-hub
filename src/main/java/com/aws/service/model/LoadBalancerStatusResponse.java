@@ -23,8 +23,7 @@ public class LoadBalancerStatusResponse {
     @NoArgsConstructor
     public enum StatusEnum {
         ATTACHED("ATTACHED"),
-        DETACHED("DETACHED"),
-        ERROR("ERROR");
+        DETACHED("DETACHED");
 
         private String value;
 
