@@ -1,6 +1,8 @@
 package com.aws.service.model;
 
 import com.fasterxml.jackson.annotation.*;
+import jakarta.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,17 +15,31 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoadBalancerStatusResponse {
+public class Ec2InstancesRequest {
+
+    private String id;
+    private String name;
+
+    @NotNull
+    private String region;
 
     private StatusEnum status;
-    private String timestamp;
-    private Alarm alarm;
+    private String type;
+    private String privateIp;
+    private String publicIp;
+    private String subnetId;
+    private String platform;
+    private OffsetDateTime launchTime;
 
     @Getter
     @NoArgsConstructor
     public enum StatusEnum {
-        ATTACHED("ATTACHED"),
-        DETACHED("DETACHED");
+        PENDING("PENDING"),
+        RUNNING("RUNNING"),
+        SHUTTING_DOWN("SHUTTING-DOWN"),
+        TERMINATED("TERMINATED"),
+        STOPPING("STOPPING"),
+        STOPPED("STOPPED");
 
         private String value;
 
@@ -33,6 +49,12 @@ public class LoadBalancerStatusResponse {
 
         public String value() {
             return value;
+        }
+
+        @Override
+        @JsonValue
+        public String toString() {
+            return String.valueOf(value);
         }
 
         public static StatusEnum fromString(String s) {

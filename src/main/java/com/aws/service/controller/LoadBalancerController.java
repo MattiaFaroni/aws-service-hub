@@ -2,7 +2,7 @@ package com.aws.service.controller;
 
 import static com.aws.service.error.ErrorResponseBuilder.buildBadRequest;
 
-import com.aws.service.api.LoadBalancerStatusInterface;
+import com.aws.service.api.LoadBalancerInterface;
 import com.aws.service.model.Alarm;
 import com.aws.service.model.LoadBalancerStatusRequest;
 import com.aws.service.model.LoadBalancerStatusResponse;
@@ -16,7 +16,7 @@ import jakarta.ws.rs.Path;
 import java.util.Set;
 
 @Path("/load-balancer/service/status")
-public class LoadBalancerStatusController implements LoadBalancerStatusInterface {
+public class LoadBalancerController implements LoadBalancerInterface {
 
     // spotless:off
     private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -27,7 +27,7 @@ public class LoadBalancerStatusController implements LoadBalancerStatusInterface
     public LoadBalancerStatusResponse loadBalancerInstance(LoadBalancerStatusRequest request) {
 
         if (request == null) {
-            throw buildBadRequest("Request body not valid", Alarm.CodeEnum.REQUEST_ERROR, LoadBalancerStatusResponse.class);
+            throw buildBadRequest("Request body not valid", Alarm.CodeEnum.REQUEST_ERROR);
         }
 
         Set<ConstraintViolation<LoadBalancerStatusRequest>> constraintViolations = validator.validate(request);
@@ -48,7 +48,7 @@ public class LoadBalancerStatusController implements LoadBalancerStatusInterface
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .findFirst()
                 .orElse("Invalid request");
-        return buildBadRequest(error, Alarm.CodeEnum.REQUEST_ERROR, LoadBalancerStatusResponse.class);
+        return buildBadRequest(error, Alarm.CodeEnum.REQUEST_ERROR);
     }
     // spotless:on
 }

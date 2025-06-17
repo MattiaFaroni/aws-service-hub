@@ -5,7 +5,7 @@ import static com.aws.service.error.ErrorResponseBuilder.buildInternalServerErro
 import com.aws.service.model.Alarm;
 import com.aws.service.model.LoadBalancerStatusRequest;
 import com.aws.service.model.LoadBalancerStatusResponse;
-import com.aws.service.tools.Timestamp;
+import com.aws.service.tools.time.Timestamp;
 import io.sentry.Sentry;
 import jakarta.ws.rs.InternalServerErrorException;
 import java.util.List;
@@ -46,7 +46,7 @@ public class LoadBalancerStatusService {
             return ElasticLoadBalancingV2Client.builder().region(Region.of(region)).build();
         } catch (Exception e) {
             Sentry.captureException(e);
-            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR, LoadBalancerStatusResponse.class);
+            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR);
         }
     }
 
@@ -68,7 +68,7 @@ public class LoadBalancerStatusService {
 
         } catch (Exception e) {
             Sentry.captureException(e);
-            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR, LoadBalancerStatusResponse.class);
+            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR);
         }
     }
 
@@ -92,7 +92,7 @@ public class LoadBalancerStatusService {
 
         } catch (Exception e) {
             Sentry.captureException(e);
-            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR, LoadBalancerStatusResponse.class);
+            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR);
         }
     }
 
@@ -114,7 +114,7 @@ public class LoadBalancerStatusService {
 
         } catch (Exception e) {
             Sentry.captureException(e);
-            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR, LoadBalancerStatusResponse.class);
+            throw buildInternalServerErrorException(e.getMessage(), Alarm.CodeEnum.AWS_CONNECTION_ERROR);
         }
     }
 

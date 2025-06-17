@@ -5,7 +5,7 @@ import com.aws.service.model.LoadBalancerStatusResponse;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 
-public interface LoadBalancerStatusInterface {
+public interface LoadBalancerInterface {
 
     @POST
     @Consumes({"application/json"})

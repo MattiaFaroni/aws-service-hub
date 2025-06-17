@@ -1,34 +1,122 @@
 openapi: 3.0.3
 info:
-  title: vat-validation
-  version: '1.0.0'
+  title: aws-service-hub
+  version: '1.1.0'
+  description: Java application designed to abstract and simplify access to AWS
+
 paths:
-  "/aws/load-balancer/service/status/":
+  /aws/load-balancer/service/status/:
     post:
-      operationId: loadBalancerStatus
+      operationId: checkLoadBalancerStatus
       tags:
-        - loadBalancerStatus
+        - LoadBalancer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/loadBalancerStatusRequest"
+              $ref: "#/components/schemas/LoadBalancerStatusRequest"
       responses:
         '200':
-          description: "Service successfully connected to the load balancer"
+          description: Service successfully connected to the load balancer
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loadBalancerStatusResponse"
+                $ref: "#/components/schemas/LoadBalancerStatusResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoadBalancerStatusResponse"
         '503':
-          description: "Service not connected to the load balancer"
+          description: Service not connected to the load balancer
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loadBalancerStatusResponse"
+                $ref: "#/components/schemas/LoadBalancerStatusResponse"
+
+  "/aws/ec2/instances/":
+    post:
+      operationId: listEc2Instances
+      tags:
+        - Ec2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ec2InstancesRequest"
+      responses:
+        '200':
+          description: List of aws instances successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ec2InstancesResponse"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ec2InstancesResponse"
+        '503':
+          description: Error while retrieving aws instances
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ec2InstancesResponse"
+
 components:
   schemas:
-    loadBalancerStatusRequest:
+    BaseAlarmResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp
+        alarm:
+          $ref: "#/components/schemas/Alarm"
+
+    BaseInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          description: EC2 instance ID
+        name:
+          type: string
+          description: Name of the instance
+        region:
+          type: string
+          description: AWS region
+        status:
+          type: string
+          enum: [ PENDING, RUNNING, SHUTTING-DOWN, TERMINATED, STOPPING, STOPPED ]
+          description: Instance status
+        type:
+          type: string
+          description: Instance type
+        privateIp:
+          type: string
+          format: ipv4
+          description: Private IP address
+        publicIp:
+          type: string
+          format: ipv4
+          description: Public IP address
+        subnetId:
+          type: string
+          description: AWS Subnet ID
+        platform:
+          type: string
+          description: Operating system
+        launchTime:
+          type: string
+          format: date-time
+          description: Instance start date and time
+
+    LoadBalancerStatusRequest:
       type: object
       required:
         - loadBalancerName
@@ -38,35 +126,56 @@ components:
       properties:
         loadBalancerName:
           type: string
-          description: "Load Balancer name"
+          description: Load Balancer name
         instanceId:
           type: string
-          description: "Instance ID"
+          description: Instance ID
         region:
           type: string
-          description: "Aws region"
+          description: Aws region
         port:
           type: integer
-          description: "Service port"
-    loadBalancerStatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum: [ ATTACHED, DETACHED, ERROR ]
-          description: "Instance status"
-        timestamp:
-          type: string
-          description: "Timestamp"
-        alarm:
-          $ref: "#/components/schemas/alarm"
-    alarm:
+          description: Service port
+
+    Ec2InstancesRequest:
+      allOf:
+        - $ref: "#/components/schemas/BaseInstance"
+        - type: object
+          required:
+            - region
+
+    LoadBalancerStatusResponse:
+      allOf:
+        - $ref: "#/components/schemas/BaseAlarmResponse"
+        - type: object
+          properties:
+            status:
+              type: string
+              enum: [ ATTACHED, DETACHED ]
+              description: Instance status
+
+    Ec2InstancesResponse:
+      allOf:
+        - $ref: "#/components/schemas/BaseAlarmResponse"
+        - type: object
+          properties:
+            instances:
+              type: array
+              items:
+                $ref: "#/components/schemas/Instance"
+
+    Instance:
+      allOf:
+        - $ref: "#/components/schemas/BaseInstance"
+        - type: object
+
+    Alarm:
       type: object
       properties:
         code:
           type: string
           enum: [ REQUEST_ERROR, AWS_CONNECTION_ERROR ]
-          description: "Alarm code"
+          description: Alarm code
         message:
           type: string
-          description: "Alarm description"
+          description: Alarm description
