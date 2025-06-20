@@ -9,20 +9,20 @@ plugins {
 }
 
 group 'com.aws.service'
-version '1.0.0'
+version '1.1.0'
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    awsVersion = '2.31.63'
+    awsVersion = '2.31.66'
     jUnitJupiterVersion = '5.13.1'
     jUnitPlatformVersion = '1.13.1'
     lombokVersion = '1.18.38'
     jacksonVersion = '2.19.0'
     jerseyVersion = '4.0.0-M2'
-    log4jVersion = '2.24.3'
+    log4jVersion = '2.25.0'
 }
 
 java {

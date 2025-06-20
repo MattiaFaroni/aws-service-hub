@@ -1,3 +1,17 @@
+## Version 1.1.0
+**Release Date:** 2025-06-20
+
+### New Features
+- Implemented EC2 instance listing API with support for filtering by region, type, status, and more.
+
+### Dependency Versions
+- **AWS SDK:** 2.31.66
+- **JUnit Jupiter:** 5.13.1
+- **JUnit Platform:** 1.13.1
+- **Wiremock:** 3.13.1
+- **Sentry:** 5.7.0
+- **Log4j:** 2.25.0
+
 ## Version 1.0.0
 **Release Date:** 2025-05-23
 
