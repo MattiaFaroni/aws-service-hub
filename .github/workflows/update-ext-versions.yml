@@ -1,0 +1,43 @@
+name: Update ext dependency versions
+
+on:
+  schedule:
+    - cron: '0 8 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run update_ext_versions.py
+        run: python update_ext_versions.py
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Automated update of dependency versions"
+          branch: update-dependencies
+          title: "Automated update of dependency versions"
+          body: |
+            This automated pull request updates the dependency versions declared in the `ext` block of the `build.gradle` file to their latest available releases.
+
+            Please review the changes carefully and run tests before merging to ensure compatibility and stability.
+
+            This update is part of a scheduled monthly maintenance to keep dependencies up to date.
+          delete-branch: true
