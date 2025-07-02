@@ -1,3 +1,11 @@
+## Unreleased
+### Dependency Versions
+- **Sentry:** 5.8.0
+- **AWS SDK:** 2.31.74
+- **JUnit Jupiter:** 5.13.2
+- **JUnit Platform:** 1.13.2
+- **Jackson:** 2.19.1
+
 ## Version 1.1.0
 **Release Date:** 2025-06-20
 
