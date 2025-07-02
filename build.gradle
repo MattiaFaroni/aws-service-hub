@@ -53,7 +53,7 @@ dependencies {
     implementation("org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}")
     implementation("org.glassfish.jersey.inject:jersey-cdi2-se:${jerseyVersion}")
 
-    implementation("org.hibernate.validator:hibernate-validator:9.0.0.Final")
+    implementation("org.hibernate.validator:hibernate-validator:9.0.1.Final")
 
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
     compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api:4.1.0')
