@@ -10,7 +10,11 @@ import jakarta.ws.rs.core.Response;
 @Path("/healthcheck")
 public class HealthCheckController {
 
-    private final HealthCheckService healthCheckService = new HealthCheckService();
+    private final HealthCheckService healthCheckService;
+
+    public HealthCheckController() {
+        this.healthCheckService = new HealthCheckService();
+    }
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

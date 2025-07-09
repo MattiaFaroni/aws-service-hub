@@ -24,6 +24,10 @@ public class HealthCheckService {
     }
     //spotless:on
 
+    public HealthCheckService(Cache<String, Boolean> cache) {
+        this.healthCache = cache;
+    }
+
     /**
      * Checks the cached health status of AWS services.
      * @return true if both EC2 and ELB health checks pass, false otherwise.
@@ -40,7 +44,12 @@ public class HealthCheckService {
         try (Ec2Client ec2 = Ec2Client.create()) {
             DescribeInstancesResponse response = ec2.describeInstances(
                     DescribeInstancesRequest.builder().maxResults(5).build());
-            return response.reservations() != null;
+
+            if (response.reservations() == null || response.reservations().isEmpty()) {
+                logger.error("EC2 check failed: no reservations found");
+                return false;
+            }
+            return true;
 
         } catch (Exception e) {
             Sentry.captureException(e);
