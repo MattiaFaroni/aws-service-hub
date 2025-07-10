@@ -97,3 +97,13 @@ If the instances match the specified filters, the response will resemble the exa
 ```
 
 If the request contains invalid parameters, the service responds with HTTP status 400, including an alarms section detailing the validation issues.
+
+
+## Health Check Service
+
+This service provides a simple endpoint to check the health status of the application.  
+The endpoint returns a 200 Ok response with the message "Services working" if all internal health checks pass, or a 503 Service Unavailable response with the message "Health check failed" if any check fails.
+
+```http
+GET /healthcheck
+```
