@@ -3,7 +3,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.WireMockServer;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,22 +12,21 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import server.WireMockHelper;
 
 public class LoadBalancerStatusTest {
 
-    private static final int WIREMOCK_PORT = 8080;
-    private static final String BASE_URL = "http://localhost:" + WIREMOCK_PORT + "/aws/load-balancer/service/status";
+    private static final String BASE_URL =
+            "http://localhost:" + WireMockHelper.getPort() + "/aws/load-balancer/service/status";
     private static final String CONTENT_TYPE = "application/json";
 
-    private WireMockServer wireMockServer;
     private HttpClient client;
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
-        wireMockServer = new WireMockServer(WIREMOCK_PORT);
-        wireMockServer.start();
-        configureFor("localhost", WIREMOCK_PORT);
+        WireMockHelper.startServer();
+        WireMockHelper.reset();
 
         client = HttpClient.newHttpClient();
         objectMapper = new ObjectMapper();
@@ -36,7 +34,7 @@ public class LoadBalancerStatusTest {
 
     @AfterEach
     void tearDown() {
-        wireMockServer.stop();
+        WireMockHelper.stopServer();
     }
 
     /**
