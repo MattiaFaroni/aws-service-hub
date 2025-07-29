@@ -16,13 +16,13 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.31.77'
-    jUnitJupiterVersion = '5.13.3'
-    jUnitPlatformVersion = '1.13.3'
+    awsVersion = '2.32.9'
+    jUnitJupiterVersion = '6.0.0-M2'
+    jUnitPlatformVersion = '6.0.0-M2'
     lombokVersion = '1.18.38'
-    jacksonVersion = '2.19.1'
+    jacksonVersion = '2.19.2'
     jerseyVersion = '4.0.0-M2'
-    log4jVersion = '2.25.0'
+    log4jVersion = '2.25.1'
 }
 
 java {
@@ -60,10 +60,10 @@ dependencies {
     compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
 
-    implementation("io.smallrye:jandex:3.3.2")
+    implementation("io.smallrye:jandex:3.4.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
 
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.1")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.2")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${jUnitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${jUnitJupiterVersion}")
