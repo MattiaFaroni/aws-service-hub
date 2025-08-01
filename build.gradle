@@ -16,13 +16,13 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.32.9'
+    awsVersion = '2.32.13'
     jUnitJupiterVersion = '6.0.0-M2'
     jUnitPlatformVersion = '6.0.0-M2'
     lombokVersion = '1.18.38'
     jacksonVersion = '2.19.2'
     jerseyVersion = '4.0.0-M2'
-    log4jVersion = '2.25.1'
+    log4jVersion = '3.0.0-beta3'
 }
 
 java {
