@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.sentry.Sentry;
 import java.util.concurrent.TimeUnit;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.ec2.Ec2Client;
@@ -15,8 +16,8 @@ import software.amazon.awssdk.services.elasticloadbalancingv2.model.DescribeTarg
 
 public class HealthCheckService {
 
-    private final Cache<String, Boolean> healthCache;
-    private static final Logger logger = LoggerFactory.getLogger(HealthCheckService.class);
+    private final Cache<@NonNull String, Boolean> healthCache;
+    private final Logger logger = LoggerFactory.getLogger(HealthCheckService.class);
 
     // spotless:off
     public HealthCheckService() {
@@ -24,7 +25,7 @@ public class HealthCheckService {
     }
     //spotless:on
 
-    public HealthCheckService(Cache<String, Boolean> cache) {
+    public HealthCheckService(Cache<@NonNull String, Boolean> cache) {
         this.healthCache = cache;
     }
 

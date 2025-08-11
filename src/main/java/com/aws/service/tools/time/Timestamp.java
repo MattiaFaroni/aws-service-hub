@@ -10,9 +10,11 @@ import lombok.Setter;
 @Setter
 public class Timestamp {
 
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC);
+
     public String toString() {
         Instant now = Instant.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_INSTANT;
-        return now.atOffset(ZoneOffset.UTC).format(formatter);
+        return FORMATTER.format(now);
     }
 }

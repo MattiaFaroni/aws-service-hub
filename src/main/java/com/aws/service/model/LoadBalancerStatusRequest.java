@@ -1,6 +1,5 @@
 package com.aws.service.model;
 
-import com.fasterxml.jackson.annotation.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoadBalancerStatusRequest {
 
     @NotNull

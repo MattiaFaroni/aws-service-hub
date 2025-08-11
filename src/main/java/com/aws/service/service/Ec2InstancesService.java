@@ -1,6 +1,7 @@
 package com.aws.service.service;
 
 import static com.aws.service.error.ErrorResponseBuilder.buildBadRequest;
+import static com.aws.service.model.Instance.StatusEnum.fromValue;
 
 import com.aws.service.model.Alarm;
 import com.aws.service.model.Ec2InstancesRequest;
@@ -125,7 +126,7 @@ public class Ec2InstancesService {
                 .orElse(null));
 
         instanceModel.setRegion(region);
-        instanceModel.setStatus(com.aws.service.model.Instance.StatusEnum.fromString(instance.state().nameAsString().toUpperCase()));
+        instanceModel.setStatus(fromValue(instance.state().nameAsString().toUpperCase()));
         instanceModel.setType(instance.instanceTypeAsString());
         instanceModel.setPrivateIp(instance.privateIpAddress());
         instanceModel.setPublicIp(instance.publicIpAddress());

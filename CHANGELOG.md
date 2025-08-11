@@ -1,11 +1,14 @@
-## Unreleased
+## Version 2.0.0
+**Release Date:** 2025-08-11
 
 ### New Features
 - Add health check service with caching and AWS integration.
+- Migration from Jackson to Jakarta JSON-B.
+- Migrating from Tomcat to WildFly.
 
 ### Dependency Versions
 - **Sentry:** 5.8.0
-- **AWS SDK:** 2.32.9
+- **AWS SDK:** 2.32.19
 - **JUnit Jupiter:** 6.0.0-M2
 - **JUnit Platform:** 6.0.0-M2
 - **Jackson:** 2.19.2
