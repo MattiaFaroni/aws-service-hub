@@ -7,13 +7,13 @@
 - Migrating from Tomcat to WildFly.
 
 ### Dependency Versions
-- **Sentry:** 5.8.0
-- **AWS SDK:** 2.32.19
+- **Sentry:** 5.9.0
+- **Spotless:** 7.2.1
+- **OpenApi:** 7.14.0
+- **AWS SDK:** 2.32.20
 - **JUnit Jupiter:** 6.0.0-M2
 - **JUnit Platform:** 6.0.0-M2
-- **Jackson:** 2.19.2
 - **Jandex:** 3.4.0
-- **Log4j:** 2.25.1
 - **Caffeine:** 3.2.2
 
 ## Version 1.1.0
