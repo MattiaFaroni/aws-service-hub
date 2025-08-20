@@ -4,8 +4,8 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.sentry.Sentry;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.DescribeInstancesRequest;
 import software.amazon.awssdk.services.ec2.model.DescribeInstancesResponse;
@@ -13,10 +13,10 @@ import software.amazon.awssdk.services.elasticloadbalancingv2.ElasticLoadBalanci
 import software.amazon.awssdk.services.elasticloadbalancingv2.model.DescribeTargetHealthRequest;
 import software.amazon.awssdk.services.elasticloadbalancingv2.model.DescribeTargetHealthResponse;
 
+@Slf4j
 public class HealthCheckService {
 
-    private final Cache<String, Boolean> healthCache;
-    private static final Logger logger = LoggerFactory.getLogger(HealthCheckService.class);
+    private final Cache<@NonNull String, Boolean> healthCache;
 
     // spotless:off
     public HealthCheckService() {
@@ -24,7 +24,7 @@ public class HealthCheckService {
     }
     //spotless:on
 
-    public HealthCheckService(Cache<String, Boolean> cache) {
+    public HealthCheckService(Cache<@NonNull String, Boolean> cache) {
         this.healthCache = cache;
     }
 
@@ -46,14 +46,14 @@ public class HealthCheckService {
                     DescribeInstancesRequest.builder().maxResults(5).build());
 
             if (response.reservations() == null || response.reservations().isEmpty()) {
-                logger.error("EC2 check failed: no reservations found");
+                log.error("EC2 check failed: no reservations found");
                 return false;
             }
             return true;
 
         } catch (Exception e) {
             Sentry.captureException(e);
-            logger.error("EC2 check failed: {}", e.getMessage());
+            log.error("EC2 check failed: {}", e.getMessage());
             return false;
         }
     }
@@ -65,7 +65,7 @@ public class HealthCheckService {
     public boolean checkElb() {
         String targetGroupArn = System.getenv("TARGET_GROUP_ARN");
         if (targetGroupArn == null || targetGroupArn.isBlank()) {
-            logger.warn("ELB check skipped: no TARGET_GROUP_ARN set");
+            log.warn("ELB check skipped: no TARGET_GROUP_ARN set");
             return true;
         }
 
@@ -77,7 +77,7 @@ public class HealthCheckService {
 
         } catch (Exception e) {
             Sentry.captureException(e);
-            logger.error("ELB check failed: {}", e.getMessage());
+            log.error("ELB check failed: {}", e.getMessage());
             return false;
         }
     }

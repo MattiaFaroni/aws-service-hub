@@ -1,9 +1,8 @@
 package com.aws.service.model;
 
-import com.fasterxml.jackson.annotation.*;
+import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Ec2InstancesRequest {
 
     private String id;
@@ -52,25 +49,15 @@ public class Ec2InstancesRequest {
         }
 
         @Override
-        @JsonValue
         public String toString() {
-            return String.valueOf(value);
+            return value;
         }
 
-        public static StatusEnum fromString(String s) {
-            for (StatusEnum b : StatusEnum.values()) {
-                if (Objects.toString(b.value).equals(s)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected string value '" + s + "'");
-        }
-
-        @JsonCreator
+        @JsonbCreator
         public static StatusEnum fromValue(String value) {
-            for (StatusEnum b : StatusEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
+            for (StatusEnum s : StatusEnum.values()) {
+                if (s.value.equals(value)) {
+                    return s;
                 }
             }
             throw new IllegalArgumentException("Unexpected value '" + value + "'");

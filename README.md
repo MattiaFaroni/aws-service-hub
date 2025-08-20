@@ -14,13 +14,28 @@
 --------
 
 AWS-Service-Hub is a Java application designed to abstract and simplify access to AWS services through a standardized set of REST APIs.
-The project is developed using Java 21, built with Gradle, and deployed on Apache Tomcat 10 as the servlet container.  
-⚠️ **Note:** To use the APIs, you must have a valid AWS account. AWS credentials must be properly configured on your local machine using the standard `.aws` directory. 
-
+The project is developed using Java 21, built with Gradle, and deployed on Wildfly 36.0.1 as the servlet container.  
+⚠️ **Note:** To use the APIs, you must have a valid AWS account. AWS credentials must be properly configured on your local machine using the standard `.aws` directory.
 
 ## Features
 * Check the connectivity status of a specific service or application with the configured AWS Load Balancer.
 * Retrieve a filtered list of EC2 instances based on region, status, instance type, and more.
+
+## Configuration
+The application is configured via JVM options.  
+The following VM option is supported:
+
+- `-Dsentry.config.path`: Path to the Sentry configuration file.
+
+If this option is not set, the default configuration file `sentry.properties` inside the WAR is used.
+
+```properties
+# sentry.properties
+dsn= Sentry Data Source Name for event authentication and reporting.
+environment= Application runtime environment (e.g., production, staging).
+traces-sample-rate= Sampling rate for performance tracing (0.0–1.0).
+debug= Enables debug logging when set to true.
+```
 
 ## Load Balancer Service
 This service verifies whether a specific instance is correctly registered and connected to an AWS Load Balancer.  
@@ -43,7 +58,7 @@ If the service is correctly connected to the load balancer, the result will rese
 ```body
 {
     "status": "ATTACHED",
-    "timestamp": "2025-04-15T10:25:20.823045692Z"
+    "timestamp": "2025-08-11 15:11:00"
 }
 ```
 If input parameters are missing or invalid, the service will respond with HTTP status codes 400 or 503, including an alarms section in the response body to highlight detected issues.

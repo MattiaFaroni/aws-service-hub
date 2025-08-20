@@ -4,25 +4,22 @@ plugins {
     id 'java'
     id 'war'
     id 'org.openapi.generator' version '7.14.0'
-    id "com.diffplug.spotless" version "7.0.4"
-    id "io.sentry.jvm.gradle" version "5.8.0"
+    id "com.diffplug.spotless" version "7.2.1"
+    id "io.sentry.jvm.gradle" version "5.9.0"
 }
 
 group 'com.aws.service'
-version '1.1.0'
+version '2.0.0'
 
 repositories {
     mavenCentral()
 }
 
 ext {
-    awsVersion = '2.32.9'
+    awsVersion = '2.32.20'
     jUnitJupiterVersion = '6.0.0-M2'
     jUnitPlatformVersion = '6.0.0-M2'
     lombokVersion = '1.18.38'
-    jacksonVersion = '2.19.2'
-    jerseyVersion = '4.0.0-M2'
-    log4jVersion = '2.25.1'
 }
 
 java {
@@ -41,24 +38,10 @@ dependencies {
     implementation("software.amazon.awssdk:ec2:${awsVersion}")
     implementation("software.amazon.awssdk:elasticloadbalancingv2:${awsVersion}")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${jacksonVersion}")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
-
-    implementation("org.apache.logging.log4j:log4j-core:${log4jVersion}")
-    implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
-    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${log4jVersion}")
-
-    implementation("org.glassfish.jersey.containers:jersey-container-servlet:${jerseyVersion}")
-    implementation("org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}")
-    implementation("org.glassfish.jersey.inject:jersey-cdi2-se:${jerseyVersion}")
-
-    implementation("org.hibernate.validator:hibernate-validator:9.0.1.Final")
-
-    implementation("jakarta.validation:jakarta.validation-api:3.1.1")
-    compileOnly('jakarta.enterprise:jakarta.enterprise.cdi-api:4.1.0')
+    compileOnly("jakarta.validation:jakarta.validation-api:3.1.1")
     compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
+    compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.1")
 
     implementation("io.smallrye:jandex:3.4.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
@@ -70,6 +53,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:${jUnitPlatformVersion}")
     testRuntimeOnly("org.junit.platform:junit-platform-engine:${jUnitPlatformVersion}")
 
+    testImplementation("org.slf4j:slf4j-simple:2.0.17")
     testImplementation("org.wiremock:wiremock:3.13.1")
 }
 
@@ -88,8 +72,7 @@ tasks.register('openApiGenerateClasses', GenerateTask) {
     modelPackage.set("${defaultPackage}.model")
     configOptions.set([
 
-            additionalModelTypeAnnotations: ";@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY)" +
-                    ";@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)",
+            additionalModelTypeAnnotations: "",
 
             useTags                       : "true",
             dateLibrary                   : "java8",
@@ -108,12 +91,13 @@ tasks.register('openApiGenerateClasses', GenerateTask) {
             openApiNullable               : "false",
 
             generatePom                   : "false",
-
             generateConstructorWithAllArgs: "true"
     ])
 }
 
+
 war {
+    archiveFileName = 'awsServiceHub.war'
     doFirst {
         def propertyFile = file('build.properties')
         def props = new Properties()
@@ -151,7 +135,9 @@ spotless {
 }
 
 afterEvaluate {
-    tasks.named("war") {
-        dependsOn("spotlessApply")
+    ["build", "war"].each { taskName ->
+        tasks.named(taskName) {
+            dependsOn("spotlessApply")
+        }
     }
 }
