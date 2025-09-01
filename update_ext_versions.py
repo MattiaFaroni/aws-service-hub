@@ -8,9 +8,6 @@ EXT_DEPENDENCIES = {
     "jUnitJupiterVersion": ("org.junit.jupiter", "junit-jupiter-api"),
     "jUnitPlatformVersion": ("org.junit.platform", "junit-platform-engine"),
     "lombokVersion": ("org.projectlombok", "lombok"),
-    "jacksonVersion": ("com.fasterxml.jackson.core", "jackson-databind"),
-    "jerseyVersion": ("org.glassfish.jersey.core", "jersey-common"),
-    "log4jVersion": ("org.apache.logging.log4j", "log4j-core"),
 }
 
 def get_latest_version(group_id, artifact_id):

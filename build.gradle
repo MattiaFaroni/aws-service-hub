@@ -16,7 +16,7 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.32.20'
+    awsVersion = '2.33.0'
     jUnitJupiterVersion = '6.0.0-M2'
     jUnitPlatformVersion = '6.0.0-M2'
     lombokVersion = '1.18.38'
@@ -41,7 +41,7 @@ dependencies {
     compileOnly("jakarta.validation:jakarta.validation-api:3.1.1")
     compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
-    compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.1")
+        compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.1")
 
     implementation("io.smallrye:jandex:3.4.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.5")
