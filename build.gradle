@@ -3,7 +3,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id 'java'
     id 'war'
-    id 'org.openapi.generator' version '7.16.0'
+    id 'org.openapi.generator' version '7.17.0'
     id "com.diffplug.spotless" version "8.0.0"
     id "io.sentry.jvm.gradle" version "5.12.1"
 }
@@ -16,9 +16,9 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.34.8'
-    jUnitJupiterVersion = '6.0.0'
-    jUnitPlatformVersion = '6.0.0'
+    awsVersion = '2.37.2'
+    jUnitJupiterVersion = '6.0.1'
+    jUnitPlatformVersion = '6.0.1'
     lombokVersion = '1.18.42'
 }
 
@@ -43,10 +43,10 @@ dependencies {
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
         compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.1")
 
-    implementation("io.smallrye:jandex:3.5.0")
+    implementation("io.smallrye:jandex:3.5.1")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.6")
 
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.2")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${jUnitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${jUnitJupiterVersion}")
