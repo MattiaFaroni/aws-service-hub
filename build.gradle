@@ -16,7 +16,7 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.37.2'
+    awsVersion = '2.41.0'
     jUnitJupiterVersion = '6.0.1'
     jUnitPlatformVersion = '6.0.1'
     lombokVersion = '1.18.42'
