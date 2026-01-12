@@ -42,12 +42,9 @@ public class HealthCheckTest {
                 .withRequestBody(containing("DescribeInstances"))
                 .willReturn(serverError()));
 
-        stubFor(
-                post(urlPathEqualTo("/"))
-                        .withRequestBody(containing("DescribeTargetHealth"))
-                        .willReturn(
-                                okXml(
-                                        """
+        stubFor(post(urlPathEqualTo("/"))
+                .withRequestBody(containing("DescribeTargetHealth"))
+                .willReturn(okXml("""
                             <DescribeTargetHealthResponse xmlns="http://elasticloadbalancing.amazonaws.com/doc/2015-12-01/">
                                 <TargetHealthDescriptions/>
                             </DescribeTargetHealthResponse>

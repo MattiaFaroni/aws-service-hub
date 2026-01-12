@@ -3,9 +3,9 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id 'java'
     id 'war'
-    id 'org.openapi.generator' version '7.17.0'
-    id "com.diffplug.spotless" version "8.0.0"
-    id "io.sentry.jvm.gradle" version "5.12.1"
+    id 'org.openapi.generator' version '7.18.0'
+    id "com.diffplug.spotless" version "8.1.0"
+    id "io.sentry.jvm.gradle" version "5.12.2"
 }
 
 group 'com.aws.service'
@@ -16,9 +16,9 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.37.2'
-    jUnitJupiterVersion = '6.0.1'
-    jUnitPlatformVersion = '6.0.1'
+    awsVersion = '2.41.5'
+    jUnitJupiterVersion = '6.0.2'
+    jUnitPlatformVersion = '6.0.2'
     lombokVersion = '1.18.42'
 }
 
@@ -43,7 +43,7 @@ dependencies {
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
         compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.1")
 
-    implementation("io.smallrye:jandex:3.5.1")
+    implementation("io.smallrye:jandex:3.5.3")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.6")
 
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
@@ -54,7 +54,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-engine:${jUnitPlatformVersion}")
 
     testImplementation("org.slf4j:slf4j-simple:2.0.17")
-    testImplementation("org.wiremock:wiremock:3.13.1")
+    testImplementation("org.wiremock:wiremock:3.13.2")
 }
 
 String defaultPackage = "com.aws.service"

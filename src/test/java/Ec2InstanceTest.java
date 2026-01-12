@@ -81,14 +81,11 @@ public class Ec2InstanceTest {
         @Test
         void requestBodyEmpty() throws Exception {
 
-            stubFor(
-                    post(urlEqualTo("/aws/ec2/instances"))
-                            .willReturn(
-                                    aResponse()
-                                            .withStatus(400)
-                                            .withHeader("Content-Type", CONTENT_TYPE)
-                                            .withBody(
-                                                    """
+            stubFor(post(urlEqualTo("/aws/ec2/instances"))
+                    .willReturn(aResponse()
+                            .withStatus(400)
+                            .withHeader("Content-Type", CONTENT_TYPE)
+                            .withBody("""
                                                     {
                                                       "status": "ERROR",
                                                       "alarms": [
@@ -108,22 +105,18 @@ public class Ec2InstanceTest {
         @Test
         void requestBodyWithoutRegion() throws Exception {
 
-            String requestBody =
-                    """
+            String requestBody = """
                     {
                       "type": "m7g.xlarge",
                       "status": "RUNNING"
                     }
                     """;
 
-            stubFor(
-                    post(urlEqualTo("/aws/ec2/instances"))
-                            .willReturn(
-                                    aResponse()
-                                            .withStatus(400)
-                                            .withHeader("Content-Type", CONTENT_TYPE)
-                                            .withBody(
-                                                    """
+            stubFor(post(urlEqualTo("/aws/ec2/instances"))
+                    .willReturn(aResponse()
+                            .withStatus(400)
+                            .withHeader("Content-Type", CONTENT_TYPE)
+                            .withBody("""
                                         {
                                           "status": "ERROR",
                                           "alarms": [

@@ -81,14 +81,11 @@ public class LoadBalancerStatusTest {
         @Test
         void requestBodyEmpty() throws Exception {
 
-            stubFor(
-                    post(urlEqualTo("/aws/load-balancer/service/status"))
-                            .willReturn(
-                                    aResponse()
-                                            .withStatus(400)
-                                            .withHeader("Content-Type", CONTENT_TYPE)
-                                            .withBody(
-                                                    """
+            stubFor(post(urlEqualTo("/aws/load-balancer/service/status"))
+                    .willReturn(aResponse()
+                            .withStatus(400)
+                            .withHeader("Content-Type", CONTENT_TYPE)
+                            .withBody("""
                                         {
                                           "status": "ERROR",
                                           "alarms": [
@@ -108,8 +105,7 @@ public class LoadBalancerStatusTest {
         @Test
         void requestBodyIncorrect() throws Exception {
 
-            String requestBody =
-                    """
+            String requestBody = """
                     {
                       "loadBalancerName": "123456789",
                       "instanceId": "123456789",
@@ -118,14 +114,11 @@ public class LoadBalancerStatusTest {
                     }
                     """;
 
-            stubFor(
-                    post(urlEqualTo("/aws/load-balancer/service/status"))
-                            .willReturn(
-                                    aResponse()
-                                            .withStatus(500)
-                                            .withHeader("Content-Type", CONTENT_TYPE)
-                                            .withBody(
-                                                    """
+            stubFor(post(urlEqualTo("/aws/load-balancer/service/status"))
+                    .willReturn(aResponse()
+                            .withStatus(500)
+                            .withHeader("Content-Type", CONTENT_TYPE)
+                            .withBody("""
                                         {
                                           "status": "ERROR",
                                           "alarms": [
