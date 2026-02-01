@@ -3,7 +3,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id 'java'
     id 'war'
-    id 'org.openapi.generator' version '7.18.0'
+    id 'org.openapi.generator' version '7.19.0'
     id "com.diffplug.spotless" version "8.1.0"
     id "io.sentry.jvm.gradle" version "5.12.2"
 }
