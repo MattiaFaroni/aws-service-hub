@@ -1,10 +1,10 @@
 ## Unversioned
 
 ### Dependency Versions
-- **OpenApi:** 7.18.0
-- **Spotless** 8.1.0
-- **Sentry:** 5.12.2
-- **AWS SDK:** 2.41.5
+- **OpenApi:** 7.19.0
+- **Spotless** 8.2.1
+- **Sentry:** 6.0.0
+- **AWS SDK:** 2.41.25
 - **JUnit:** 6.0.2
 - **Lombok:** 1.18.42
 - **Jandex:** 3.5.3
