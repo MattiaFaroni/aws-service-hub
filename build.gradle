@@ -3,9 +3,9 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id 'java'
     id 'war'
-    id 'org.openapi.generator' version '7.19.0'
+    id 'org.openapi.generator' version '7.20.0'
     id "com.diffplug.spotless" version "8.2.1"
-    id "io.sentry.jvm.gradle" version "6.0.0"
+    id "io.sentry.jvm.gradle" version "6.1.0"
 }
 
 group 'com.aws.service'
@@ -16,9 +16,9 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.41.25'
-    jUnitJupiterVersion = '6.0.2'
-    jUnitPlatformVersion = '6.0.2'
+    awsVersion = '2.42.3'
+    jUnitJupiterVersion = '6.0.3'
+    jUnitPlatformVersion = '6.0.3'
     lombokVersion = '1.18.42'
 }
 
