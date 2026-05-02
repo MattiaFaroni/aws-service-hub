@@ -19,7 +19,7 @@ ext {
     awsVersion = '2.42.25'
     jUnitJupiterVersion = '6.0.3'
     jUnitPlatformVersion = '6.0.3'
-    lombokVersion = '1.18.44'
+    lombokVersion = '1.18.46'
 }
 
 java {
