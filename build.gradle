@@ -5,7 +5,7 @@ plugins {
     id 'war'
     id 'org.openapi.generator' version '7.21.0'
     id "com.diffplug.spotless" version "8.4.0"
-    id "io.sentry.jvm.gradle" version "6.3.0"
+    id "io.sentry.jvm.gradle" version "6.5.0"
 }
 
 group 'com.aws.service'
@@ -16,10 +16,10 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.42.25'
+    awsVersion = '2.44.0'
     jUnitJupiterVersion = '6.0.3'
     jUnitPlatformVersion = '6.0.3'
-    lombokVersion = '1.18.44'
+    lombokVersion = '1.18.46'
 }
 
 java {
@@ -94,7 +94,6 @@ tasks.register('openApiGenerateClasses', GenerateTask) {
             generateConstructorWithAllArgs: "true"
     ])
 }
-
 
 war {
     archiveFileName = 'awsServiceHub.war'
