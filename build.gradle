@@ -3,9 +3,9 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id 'java'
     id 'war'
-    id 'org.openapi.generator' version '7.21.0'
-    id "com.diffplug.spotless" version "8.4.0"
-    id "io.sentry.jvm.gradle" version "6.5.0"
+    id 'org.openapi.generator' version '7.22.0'
+    id "com.diffplug.spotless" version "8.6.0"
+    id "io.sentry.jvm.gradle" version "6.9.0"
 }
 
 group 'com.aws.service'
@@ -16,9 +16,9 @@ repositories {
 }
 
 ext {
-    awsVersion = '2.44.0'
-    jUnitJupiterVersion = '6.0.3'
-    jUnitPlatformVersion = '6.0.3'
+    awsVersion = '2.46.0'
+    jUnitJupiterVersion = '6.1.0'
+    jUnitPlatformVersion = '6.1.0'
     lombokVersion = '1.18.46'
 }
 
@@ -41,7 +41,7 @@ dependencies {
     compileOnly("jakarta.validation:jakarta.validation-api:3.1.1")
     compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
-    compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.1")
+    compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.2")
 
     implementation("io.smallrye:jandex:3.5.3")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.7")
@@ -53,43 +53,34 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:${jUnitPlatformVersion}")
     testRuntimeOnly("org.junit.platform:junit-platform-engine:${jUnitPlatformVersion}")
 
-    testImplementation("org.slf4j:slf4j-simple:2.0.17")
+    testImplementation("org.slf4j:slf4j-simple:2.0.18")
     testImplementation("org.wiremock:wiremock:3.13.2")
 }
 
 String defaultPackage = "com.aws.service"
 tasks.register('openApiGenerateClasses', GenerateTask) {
-    String outputDirectory = "${layout.buildDirectory.get()}/generated/JaxRS"
-
     generatorName.set("jaxrs-spec")
     cleanupOutput.set(true)
-    inputSpec.set("$rootDir/swagger/aws-service-hub.yaml")
-    templateDir.set("$rootDir/swagger/")
-    outputDir.set(outputDirectory)
-    invokerPackage.set("${defaultPackage}")
+    inputSpec.set(layout.projectDirectory.file("swagger/aws-service-hub.yaml"))
+    templateDir.set(layout.projectDirectory.dir("swagger"))
+    outputDir.set(layout.buildDirectory.dir("generated/JaxRS"))
+    invokerPackage.set(defaultPackage)
     apiPackage.set("${defaultPackage}.api")
     apiNameSuffix.set("Interface")
     modelPackage.set("${defaultPackage}.model")
     configOptions.set([
-
             additionalModelTypeAnnotations: "",
-
             useTags                       : "true",
             dateLibrary                   : "java8",
-
             openApiSpecFileLocation       : "openapi.yaml",
             sourceFolder                  : "src/main/java",
-
             useJakartaEe                  : "true",
             useBeanValidation             : "true",
             hideGenerationTimestamp       : "true",
             interfaceOnly                 : "true",
-
             useSwaggerAnnotations         : "false",
-
             containerDefaultToNull        : "true",
             openApiNullable               : "false",
-
             generatePom                   : "false",
             generateConstructorWithAllArgs: "true"
     ])
@@ -114,6 +105,7 @@ war {
             include 'LICENSE.md'
             include 'README.md'
             include 'build.properties'
+            include 'jboss-deployment-structure.xml'
         }
     }
 }

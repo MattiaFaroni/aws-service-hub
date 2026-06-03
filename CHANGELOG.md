@@ -1,16 +1,17 @@
 ## Unversioned
 
 ### Dependency Versions
-- **OpenApi:** 7.21.0
-- **Spotless** 8.4.0
-- **Sentry:** 6.5.0
-- **AWS SDK:** 2.44.0
-- **JUnit:** 6.0.3
+- **OpenApi:** 7.22.0
+- **Spotless** 8.6.0
+- **Sentry:** 6.9.0
+- **AWS SDK:** 2.46.0
+- **JUnit:** 6.1.0
 - **Lombok:** 1.18.46
 - **Jandex:** 3.5.3
 - **Jaxb:** 4.0.7
 - **Caffeine:** 3.2.3
 - **Wiremock:** 3.13.2
+- **Jakarta-json:** 3.0.2
 
 ## Version 2.0.0
 **Release Date:** 2025-08-11
