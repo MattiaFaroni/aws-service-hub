@@ -53,7 +53,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:${jUnitPlatformVersion}")
     testRuntimeOnly("org.junit.platform:junit-platform-engine:${jUnitPlatformVersion}")
 
-    testImplementation("org.slf4j:slf4j-simple:2.0.17")
+    testImplementation("org.slf4j:slf4j-simple:2.0.18")
     testImplementation("org.wiremock:wiremock:3.13.2")
 }
 
