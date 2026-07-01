@@ -44,7 +44,7 @@ dependencies {
     compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.2")
 
     implementation("io.smallrye:jandex:3.5.3")
-    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.7")
+    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.9")
 
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.3")
 
