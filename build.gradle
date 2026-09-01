@@ -4,7 +4,7 @@ plugins {
     id 'java'
     id 'war'
     id 'org.openapi.generator' version '7.24.0'
-    id "com.diffplug.spotless" version "8.9.0"
+    id "com.diffplug.spotless" version "8.10.1"
     id "io.sentry.jvm.gradle" version "6.19.0"
 }
 
