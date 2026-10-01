@@ -46,7 +46,7 @@ dependencies {
     implementation("io.smallrye:jandex:3.6.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.9")
 
-    implementation("com.github.ben-manes.caffeine:caffeine:3.2.4")
+    implementation("com.github.ben-manes.caffeine:caffeine:3.3.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${jUnitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${jUnitJupiterVersion}")
