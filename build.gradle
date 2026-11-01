@@ -41,7 +41,7 @@ dependencies {
     compileOnly("jakarta.validation:jakarta.validation-api:3.1.1")
     compileOnly('jakarta.ws.rs:jakarta.ws.rs-api:4.0.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
-    compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.3")
+    compileOnly("jakarta.json.bind:jakarta.json.bind-api:3.0.4")
 
     implementation("io.smallrye:jandex:3.6.0")
     implementation("org.glassfish.jaxb:jaxb-runtime:4.0.9")
